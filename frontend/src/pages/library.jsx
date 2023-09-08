@@ -27,12 +27,12 @@ const LibraryPage = () => {
                 setBooks(dataObject);
             }
         } catch(err) {
-
+            // TODO - catch errors
         }
     }
 
     const handleUploadOpen = () =>{
-
+        // TODO - open upload modal
     }
 
     useEffect(() => {
@@ -44,13 +44,12 @@ const LibraryPage = () => {
             <h1>Library</h1>
             <div className="lib-toolbar">
                 <Button onClick={handleUploadOpen}>Upload a book</Button>
-                <div className="filters"><MessageLabel>Filters</MessageLabel></div>
             </div>
             <table>
                 <thead>
                     <tr>
-                        <td>File name <span className="sortIcon" id="filename"></span></td>
-                        <td>Download</td>
+                        <td><MessageLabel>File name</MessageLabel></td>
+                        <td><MessageLabel>Download link</MessageLabel></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -59,7 +58,7 @@ const LibraryPage = () => {
                         return (
                             <tr key={key}>
                                 <td>{val.book}</td>
-                                <td><a href={val.url}>{val.url}</a></td>
+                                <td><a href={val.url} className="dl_button"><MessageLabel>Download</MessageLabel></a></td>
                             </tr>
                         )
                     })}

@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 // const testFolder = '../storage';
 // const fs = require('fs');
 const verifyjwt = require('./middleware/jwt_auth');
-const controller = require('./controllers/file.controller');
+const fileController = require('./controllers/file.controller');
 require('dotenv').config();
 
 router.post('/login', loginValidation, (req, res, next) => {
@@ -109,9 +109,34 @@ router.post('/register', (req, res) => {
 //     // TODO - return requested file
 // });
 
-router.post('/upload', controller.upload);
-router.get('/files', controller.getListFiles);
-router.get('/files/:name', controller.download);
+router.post('/upload', fileController.upload);
+router.get('/files', fileController.getListFiles);
+router.get('/files/:name', fileController.download);
+
+router.get('/translations/:language', (req, res)=> {
+    db.query(
+        `SELECT msgKey, message FROM Messages WHERE langID = ${db.escape(req.params.language)};`,
+        (err, result) => {
+            //language doesn't exist
+            if (err) {
+                throw err;
+                return res.status(400).send({
+                    msg: err
+                });
+            }
+            if (!result.length) {
+                return res.status(401).send({
+                    msg: 'No entries for selected language'
+                });
+            }
+
+            return res.status(200).send({
+                msg: `Language ${req.params.language} fetched!`,
+                language: result
+            });
+        }
+    );
+})
 
 router.post('/auth', verifyjwt)
 
